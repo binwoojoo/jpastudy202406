@@ -69,4 +69,39 @@ class StudentRepositoryTest {
         System.out.println("춘식이@@@@@@@@@" + byName.get(0));
     }
 
+    @Test
+    @DisplayName("도시 이름과 전공으로 학생을 조회")
+    void findByCityAndMajorTest() {
+        //given
+        String city = "제주도";
+        String major = "화학공학";
+        //when
+        List<Student> byCityAndMajor = studentRepository.findByCityAndMajor(city, major);
+        //then
+        System.out.println("@@@@@@@@@어피치@@@@@@@@@@" + byCityAndMajor.get(0));
+    }
+
+    @Test
+    @DisplayName("전공이 공학으로 끝나는 학생들 조회")
+    void findByMajorContainingTest() {
+        //given
+        String majorContaining = "공학";
+        //when
+        List<Student> students = studentRepository.findByMajorContaining(majorContaining);
+        //then
+        students.forEach(System.out::println);
+    }
+
+    @Test
+    @DisplayName("도시 또는 이름으로 학생을 조회")
+    void nativeSQLTest() {
+        //given
+        String name = "춘식이";
+        String city = "제주도";
+        //when
+        List<Student> students = studentRepository.getStudentByNameOrCity2(name, city);
+        //then
+        students.forEach(System.out::println);
+    }
+
 }
