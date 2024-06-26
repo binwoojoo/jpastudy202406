@@ -62,8 +62,10 @@ class EmployeeRepositoryTest {
     @Test
     @DisplayName("특정 사원의 정보를 조회")
     void dummyTest() {
+
         //given
         Long id = 2L;
+
         //when
         Employee employee = employeeRepository.findById(id).orElseThrow();
 
@@ -78,6 +80,10 @@ class EmployeeRepositoryTest {
 
         //then
         System.out.println("employee = " + employee);
+
+        Department department = employee.getDepartment();
+
+        System.out.println("department = " + department);
     }
 
 
