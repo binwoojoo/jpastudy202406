@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +65,28 @@ class StudentPageRepositoryTest {
         studentList.forEach(System.out::println);
         System.out.println("totalPages = " + totalPages);
         System.out.println("totalElements = " + totalElements);
+    }
+
+    @Test
+    @DisplayName("페이징 + 정렬")
+    void pagingAndSortTest() {
+        //given
+        Pageable pageInfo = PageRequest.of(
+                0,
+                10,
+                // 매개값으로는 엔터티 필드명
+//                Sort.by("name").descending()
+
+                // 여러 조건으로 정렬
+                Sort.by(
+                        Sort.Order.desc("name"),
+                        Sort.Order.asc("city")
+                )
+        );
+        //when
+        Page<Student> studentPage = repository.findAll(pageInfo);
+        //then
+        studentPage.getContent().forEach(System.out::println);
     }
 
 }
