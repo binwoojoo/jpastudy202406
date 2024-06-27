@@ -21,6 +21,28 @@ class DepartmentRepositoryTest {
     @Autowired
     DepartmentRepository departmentRepository;
 
+    //    @BeforeEach
+    void bulkInsert() {
+
+        for (int j = 1; j <= 10; j++) {
+            Department dept = Department.builder()
+                    .name("부서" + j)
+                    .build();
+
+            departmentRepository.save(dept);
+
+            for (int i = 1; i <= 100; i++) {
+                Employee employee = Employee.builder()
+                        .name("사원" + i)
+                        .department(dept)
+                        .build();
+
+                employeeRepository.save(employee);
+            }
+        }
+
+    }
+
     @Test
     @DisplayName("특정 부서를 조회하면 해당 소속부서원들이 함께 조회된다")
     void findDeptTest() {
@@ -117,8 +139,8 @@ class DepartmentRepositoryTest {
 
         // 새로운 사원 생성
         Employee employee = Employee.builder()
-                                    .name("뽀로로")
-                                    .build();
+                .name("뽀로로")
+                .build();
         //when
         department.addEmployee(employee);
 
@@ -132,6 +154,39 @@ class DepartmentRepositoryTest {
         Department department = departmentRepository.findById(2L).orElseThrow();
         //when
         departmentRepository.delete(department);
+        //then
+    }
+
+    @Test
+    @DisplayName("N + 1 문제")
+    void nPlusOneTest() {
+        //given
+        // 1개의 쿼리
+        // 모든 부서 조회
+        List<Department> department = departmentRepository.findAll();
+
+        //when
+        for (Department dept : department) {
+            List<Employee> employees = dept.getEmployees();
+            System.out.println("사원목록 가져옴" + employees.get(0).getName());
+        }
+
+        //then
+    }
+
+    @Test
+    @DisplayName("fetch join으로 n+1문제 해결하기")
+    void fetchJoinTest() {
+        //given
+
+        //when
+        List<Department> departments = departmentRepository.getFetchEmployees();
+
+        for (Department dept : departments) {
+            List<Employee> employees = dept.getEmployees();
+            System.out.println("사원목록 가져옴" + employees.get(0).getName());
+        }
+
         //then
     }
 
