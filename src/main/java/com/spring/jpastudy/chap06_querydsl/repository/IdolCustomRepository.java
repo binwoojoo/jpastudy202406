@@ -16,6 +16,5 @@ public interface IdolCustomRepository {
 
     // 그룹명으로 아이돌을 조회
     List<Idol> foundByGroupName();
-
-    // 
+    
 }

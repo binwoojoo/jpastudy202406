@@ -32,4 +32,11 @@ public class IdolService {
         return idolList;
     }
 
+    public List<Idol> getIdolsByname() {
+
+        List<Idol> idols = idolRepository.foundAllName2();
+
+        return idols;
+    }
+
 }

@@ -5,6 +5,7 @@ import com.spring.jpastudy.chap06_querydsl.entity.Idol;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,7 @@ public class IdolRepositoryImpl implements IdolCustomRepository {
 
     @Override
     public List<Idol> foundAllName2() {
-        String sql = "SELECT * FROM tbl_idol ORDER BY idol_name ASC";
+        String sql = "SELECT * FROM idol ORDER BY idol_name DESC";
         return template.query(sql, (rs, n) -> {
 
             String idolName = rs.getString("idol_name");
@@ -69,7 +70,5 @@ public class IdolRepositoryImpl implements IdolCustomRepository {
 
         return new PageImpl<>(idolList, pageable ,totalCount);
     }
-
-
 
 }
