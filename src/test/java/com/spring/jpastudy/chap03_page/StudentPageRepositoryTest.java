@@ -27,15 +27,17 @@ class StudentPageRepositoryTest {
 
     @BeforeEach
     void bulkInsert() {
-        for (int i = 1; i < 147; i++) {
+        for (int i = 1; i <= 147; i++) {
             Student s = Student.builder()
                     .name("김시골" + i)
                     .city("도시" + i)
                     .major("숨쉬기" + i)
                     .build();
+
             repository.save(s);
         }
     }
+
 
     @Test
     @DisplayName("기본적인 페이지 조회 테스트")
@@ -45,8 +47,7 @@ class StudentPageRepositoryTest {
         int amount = 10;
 
         // 페이지 정보 객체를 생성 (Pageable)
-        // 여기서는 페이지번호가 zero-based임 1페이지는 0으로 취급
-
+        // 여기서는 페이지번호가 zero-based임: 1페이지는 0으로 취급
         Pageable pageInfo = PageRequest.of(pageNo - 1, amount);
 
         //when
@@ -59,13 +60,17 @@ class StudentPageRepositoryTest {
         int totalPages = students.getTotalPages();
 
         // 총 학생 수
-        long totalElements = students.getTotalElements();
+        long count = students.getTotalElements();
 
         //then
-        studentList.forEach(System.out::println);
+        System.out.println("\n\n\n");
         System.out.println("totalPages = " + totalPages);
-        System.out.println("totalElements = " + totalElements);
+        System.out.println("count = " + count);
+        System.out.println();
+        studentList.forEach(System.out::println);
+        System.out.println("\n\n\n");
     }
+
 
     @Test
     @DisplayName("페이징 + 정렬")
@@ -85,8 +90,12 @@ class StudentPageRepositoryTest {
         );
         //when
         Page<Student> studentPage = repository.findAll(pageInfo);
+
         //then
+        System.out.println("\n\n\n");
         studentPage.getContent().forEach(System.out::println);
+        System.out.println("\n\n\n");
     }
+
 
 }

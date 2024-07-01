@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 @Entity
 @Table(name = "tbl_dept")
 public class Department {
@@ -21,7 +20,7 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dept_id")
-    private Long id; // 부서 번호
+    private Long id; // 부서번호
 
     @Column(name = "dept_name", nullable = false)
     private String name;
@@ -36,19 +35,20 @@ public class Department {
         - mappedBy에는 상대방 엔터티에 @ManyToOne에 대응되는 필드명을 꼭 적어야 함
 
         - CascadeType
-            * PERSIST: 부모가 갱신되면 자식도 같이 갱신된다.
-                - 리스트에 자식을 추가하거나 제거하면
-                  데이터베이스에도 반영된다.
+          * PERSIST : 부모가 갱신되면 자식도 같이 갱신된다.
+          - 부모의 리스트에 자식을 추가하거나 제거하면
+            데이터베이스에도 반영된다.
 
-            * REMOVE: 부모가 제거되면 자식도 같이 제거된다.
-                - 부모를 제거하면 자식도 같이 제거된다.
-                  ON DELETE CASCADE
+          * REMOVE : 부모가 제거되면 자식도 같이 제거된다.
+          - ON DELETE CASCADE
 
-            * ALL: 위의 내용을 전부 포함
+          * ALL : 위의 내용을 전부 포함
+
      */
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, orphanRemoval = true,
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private final List<Employee> employees = new ArrayList<>();
+    @Builder.Default
+    private List<Employee> employees = new ArrayList<>();
 
     public void removeEmployee(Employee employee) {
         this.employees.remove(employee);
@@ -59,4 +59,10 @@ public class Department {
         this.employees.add(employee);
         employee.setDepartment(this);
     }
+
+
+
+
+
+
 }

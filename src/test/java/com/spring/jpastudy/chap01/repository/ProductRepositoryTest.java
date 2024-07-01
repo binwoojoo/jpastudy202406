@@ -10,14 +10,13 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.spring.jpastudy.chap01.entity.Product.Category.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-//@Transactional
-//@Rollback
+@Transactional
+@Rollback
 class ProductRepositoryTest {
 
     @Autowired
@@ -25,6 +24,7 @@ class ProductRepositoryTest {
 
     @BeforeEach
     void insertBeforeTest() {
+
         Product p1 = Product.builder()
                 .name("아이폰")
                 .category(ELECTRONIC)
@@ -50,7 +50,9 @@ class ProductRepositoryTest {
         productRepository.save(p2);
         productRepository.save(p3);
         productRepository.save(p4);
+
     }
+
 
     @Test
     @DisplayName("상품을 데이터베이스에 저장한다")
@@ -58,50 +60,49 @@ class ProductRepositoryTest {
         //given
         Product product = Product.builder()
                 .name("떡볶이")
-//                .Price(90000)
-//                .category(Product.Category.FOOD)
+//                .price(90000)
+//                .category(Product.Category.FASHION)
                 .build();
         //when
-        Product save = productRepository.save(product);
+        // insert후 저장된 데이터의 객체를 반환
+        Product saved = productRepository.save(product);
         //then
-        assertNotNull(save);
+        assertNotNull(saved);
     }
+
 
     @Test
     @DisplayName("1번 상품을 삭제한다")
     void deleteTest() {
         //given
         Long id = 1L;
-
         //when
         productRepository.deleteById(id);
-
         //then
         Product foundProduct = productRepository.findById(id)
-                .orElse(null);
+                                                .orElse(null);
 
         assertNull(foundProduct);
 
     }
 
+
     @Test
-    @DisplayName("3번 상품을 단일 조회하면 그 상품명이 구두여야한다.")
+    @DisplayName("3번 상품을 단일조회하면 그 상품명이 구두이다.")
     void findOneTest() {
         //given
         Long id = 3L;
-
         //when
         Product foundProduct = productRepository.findById(id).orElse(null);
-
         //then
         assertEquals("구두", foundProduct.getName());
 
-        System.out.println("foundProduct =" + foundProduct);
-
+        System.out.println("\n\n\nfoundProduct = " + foundProduct + "\n\n\n\n");
     }
 
+
     @Test
-    @DisplayName("상품을 전체 조회하면 상품의 총 개수가 4개이다.")
+    @DisplayName("상품을 전체조회하면 상품의 총 개수가 4개이다.")
     void findAllTest() {
         //given
 
@@ -116,31 +117,33 @@ class ProductRepositoryTest {
         System.out.println("\n\n\n");
 
         assertEquals(4, productList.size());
-
     }
+
 
     @Test
     @DisplayName("2번 상품의 이름과 카테고리를 수정한다")
     void modifyTest() {
-
         //given
         Long id = 2L;
         String newName = "청소기";
         Product.Category newCategory = ELECTRONIC;
         //when
+
         /*
-         *  jpa에서는 수정메서드를 따로 제공하지 않습니다.
-         * 단일 조회를 수행한 후 setter를 통해 값을 변경하고
-         * 다시 save를 하면 insert 대신에 update가 실행됩니다.
+            jpa에서는 수정메서드를 따로 제공하지 않습니다.
+            단일 조회를 수행한 후 setter를 통해 값을 변경하고
+            다시 save를하면 INSERT대신에 UPDATE문이 나갑니다.
          */
         Product product = productRepository.findById(id).orElse(null);
         product.setName(newName);
         product.setCategory(newCategory);
-        Product save = productRepository.save(product);
+
+        Product saved = productRepository.save(product);
 
         //then
-        assertEquals(newName, save.getName());
-
+        assertEquals(newName, saved.getName());
     }
+
+
 
 }

@@ -11,9 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+//@Rollback(false)
 class QueryDslSortTest {
 
     @Autowired
@@ -34,8 +34,10 @@ class QueryDslSortTest {
     @Autowired
     JPAQueryFactory factory;
 
+
     @BeforeEach
     void setUp() {
+
         //given
         Group leSserafim = new Group("르세라핌");
         Group ive = new Group("아이브");
@@ -57,8 +59,9 @@ class QueryDslSortTest {
 
     }
 
+
     @Test
-    @DisplayName("queryDSL로 기본 정렬하기")
+    @DisplayName("QueryDSL로 기본 정렬하기")
     void sortingTest() {
         //given
 
@@ -81,6 +84,7 @@ class QueryDslSortTest {
 
     }
 
+
     @Test
     @DisplayName("페이징 처리 하기")
     void pagingTest() {
@@ -93,35 +97,34 @@ class QueryDslSortTest {
                 .selectFrom(idol)
                 .orderBy(idol.age.desc())
                 .offset((pageNo - 1) * amount)
-                .limit(2)
+                .limit(amount)
                 .fetch();
 
         // 총 데이터 수
         Long totalCount = Optional.ofNullable(factory
                 .select(idol.count())
                 .from(idol)
-                .fetchOne()
-        ).orElse(0L);
+                .fetchOne()).orElse(0L);
 
         //then
         System.out.println("\n\n\n");
         pagedIdols.forEach(System.out::println);
-        System.out.println("totalCount = " + totalCount);
         System.out.println("\n\n\n");
 
+        System.out.println("\ntotalCount = " + totalCount);
         assertTrue(totalCount == 5);
-
     }
+
+
 
     @Test
     @DisplayName("Spring의 Page인터페이스를 통한 페이징 처리")
     void pagingWithJpaTest() {
-
         //given
         Pageable pageInfo = PageRequest.of(0, 2);
 
         //when
-        Page<Idol> pagedIdols = idolRepository.foundByPaging(pageInfo);
+        Page<Idol> pagedIdols = idolRepository.foundAllByPaging(pageInfo);
 
         //then
         assertNotNull(pagedIdols);
@@ -130,8 +133,8 @@ class QueryDslSortTest {
         System.out.println("\n\n\n");
         pagedIdols.getContent().forEach(System.out::println);
         System.out.println("\n\n\n");
-
     }
+
 
     @Test
     @DisplayName("이름 오름차순 정렬 조회")

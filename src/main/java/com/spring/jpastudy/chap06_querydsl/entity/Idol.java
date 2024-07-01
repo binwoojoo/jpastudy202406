@@ -5,8 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Setter
-@Getter
+@Table(name = "tbl_idol")
+@Setter @Getter
 @ToString(exclude = "group")
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,7 +21,7 @@ public class Idol {
 
     private int age;
 
-    private String gender;
+    private String gender; // 성별 추가
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
@@ -45,9 +45,9 @@ public class Idol {
         }
     }
 
+
     public void changeGroup(Group group) {
         this.group = group;
         group.getIdols().add(this);
     }
 }
-

@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @Table(name = "tbl_student")
 public class Student {
 
-    // 랜덤 문자로 PK지정
+    // 랜덤문자로 PK지정
     @Id
     @Column(name = "stu_id")
     @GeneratedValue(generator = "uid")
@@ -30,5 +31,4 @@ public class Student {
     private String city;
 
     private String major;
-
 }

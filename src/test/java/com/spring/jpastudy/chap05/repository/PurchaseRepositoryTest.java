@@ -19,20 +19,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-//@Rollback(value = false)
+@Rollback
 class PurchaseRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     GoodsRepository goodsRepository;
-
     @Autowired
     PurchaseRepository purchaseRepository;
 
     @Autowired
-    EntityManager em; // 영속성 컨텍스트를 관리하는 객체
+    EntityManager em;  // 영속성 컨텍스트를 관리하는 객체
 
     private User user1;
     private User user2;
@@ -58,6 +56,7 @@ class PurchaseRepositoryTest {
         goodsRepository.save(goods3);
     }
 
+
     @Test
     @DisplayName("유저와 상품을 연결한 구매 기록 생성 테스트")
     void createPurchaseTest() {
@@ -66,8 +65,8 @@ class PurchaseRepositoryTest {
                 .user(user2)
                 .goods(goods1)
                 .build();
-
         //when
+
         purchaseRepository.save(purchase);
 
         // 영속성 컨텍스트를 초기화하면 SELECT문을 볼 수 있다.
@@ -82,11 +81,12 @@ class PurchaseRepositoryTest {
 
         assertEquals(user2.getId(), foundPurchase.getUser().getId());
         assertEquals(goods1.getId(), foundPurchase.getGoods().getId());
-
     }
 
+
+
     @Test
-    @DisplayName("특정 유저의 구매 목록을 조회한다")
+    @DisplayName("특정 유저의 구매 목록을 조회한다.")
     void findPurchaseListTest() {
         //given
         Purchase purchase1 = Purchase.builder()
@@ -94,6 +94,7 @@ class PurchaseRepositoryTest {
         Purchase purchase2 = Purchase.builder()
                 .user(user1).goods(goods3).build();
         //when
+
         purchaseRepository.save(purchase1);
         purchaseRepository.save(purchase2);
 
@@ -114,9 +115,10 @@ class PurchaseRepositoryTest {
         assertTrue(purchases.stream().anyMatch(p -> p.getGoods().equals(goods3)));
     }
 
+
     @Test
-    @DisplayName("특정 상품을 구매한 유저 목록을 조회한다.")
-    void findUsersByGoodsTest() {
+    @DisplayName("특정 상품을 구매한 유저목록을 조회한다.")
+    void findUserByGoodsTest() {
         //given
         Purchase purchase1 = Purchase.builder()
                 .user(user2).goods(goods1).build();
@@ -144,6 +146,7 @@ class PurchaseRepositoryTest {
         assertTrue(purchases.stream().anyMatch(p -> p.getUser().equals(user3)));
     }
 
+
     @Test
     @DisplayName("구매기록 삭제 테스트")
     void deletePurchaseTest() {
@@ -155,19 +158,24 @@ class PurchaseRepositoryTest {
 
         em.flush();
         em.clear();
+
         //when
         purchaseRepository.delete(savedPurchase);
 
         em.flush();
         em.clear();
+
         //then
         Purchase foundPurchase
                 = purchaseRepository.findById(purchase.getId()).orElse(null);
+
         assertNull(foundPurchase);
     }
 
+
+
     @Test
-    @DisplayName("회원이 탈퇴하면 구매기록이 삭제되어야 한다")
+    @DisplayName("회원이 탈퇴하면 구매기록이 모두 삭제되어야 한다")
     void cascadeRemoveTest() {
         //given
         Purchase purchase1 = Purchase.builder()
@@ -205,5 +213,6 @@ class PurchaseRepositoryTest {
         //then
         assertEquals(1, purchaseList.size());
     }
+
 
 }

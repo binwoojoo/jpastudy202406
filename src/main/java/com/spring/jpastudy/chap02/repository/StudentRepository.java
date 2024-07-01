@@ -60,8 +60,10 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     @Query("SELECT stu FROM Student stu WHERE stu.name LIKE %?1%")
     List<Student> searchByNameWithJPQL(String name);
 
+
     // JPQL로 갱신 처리하기
     @Modifying // SELECT가 아니면 무조건 붙이기
     @Query("DELETE FROM Student s WHERE s.name = ?1 AND s.city = ?2")
     void deleteByNameAndCityWithJPQL(String name, String city);
+
 }

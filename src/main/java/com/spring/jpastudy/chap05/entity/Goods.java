@@ -6,13 +6,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter
-@Getter
+
+@Setter @Getter
+@ToString(exclude = "purchaseList")
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "purchaseList")
 @Builder
-@EqualsAndHashCode(of = "id")
 
 @Entity
 @Table(name = "tbl_mtm_goods")
@@ -27,6 +27,7 @@ public class Goods {
     private String name;
 
     @OneToMany(mappedBy = "goods", orphanRemoval = true, cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Purchase> purchaseList = new ArrayList<>();
 
 }

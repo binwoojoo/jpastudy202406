@@ -1,14 +1,12 @@
 package com.spring.jpastudy.chap06_querydsl.dto;
 
-
 import lombok.*;
 
-@Getter
-@Setter
+@Setter @Getter
 @ToString
 @EqualsAndHashCode
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class GroupAverageAgeDto {
 

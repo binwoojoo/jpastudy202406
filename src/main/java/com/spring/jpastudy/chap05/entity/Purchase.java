@@ -6,11 +6,11 @@ import javax.persistence.*;
 
 @Setter
 @Getter
+@ToString(exclude = {"user", "goods"})
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"user", "goods"})
 @Builder
-@EqualsAndHashCode(of = "id")
 
 @Entity
 @Table(name = "tbl_mtm_purchase")

@@ -14,13 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+@Rollback(false)
 class EmployeeRepositoryTest {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    EmployeeRepository employeeRepository;
+
     @Autowired
-    private DepartmentRepository departmentRepository;
+    DepartmentRepository departmentRepository;
 
 //    @BeforeEach
     void beforeInsert() {
@@ -59,32 +60,35 @@ class EmployeeRepositoryTest {
     }
 
 
+
     @Test
     @DisplayName("특정 사원의 정보를 조회")
     void dummyTest() {
-
         //given
         Long id = 2L;
-
         //when
         Employee employee = employeeRepository.findById(id).orElseThrow();
 
         /*
             SELECT 쿼리가 실행이 안됐는데 조회가 정상적으로 된 이유는
-            JPA에 존재하는 영속성 컨텍스트라는 개념 떄문에
+            JPA에 존재하는 영속성 컨텍스트라는 개념 때문에
             하나의 트랜잭션에서 INSERT가 일어났을 때 저장한 객체를
             영속성 컨텍스트라는 영역에 저장해두고 다음번에 트랜잭션
-            안에서 다시 조회할 시 SELECT문을 실행하지 않고
+            안에서 다시 조회할 시 SELECT문을 실행하지 않고 성능최적화를 위해
             컨텍스트 안에서 가져온다.
          */
 
         //then
+        System.out.println("\n\n\n");
         System.out.println("employee = " + employee);
+        System.out.println("\n\n\n");
 
         Department department = employee.getDepartment();
-
+        System.out.println("\n\n\n");
         System.out.println("department = " + department);
+        System.out.println("\n\n\n");
     }
+
 
 
 }

@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-@ToString(exclude = {"nickName"})
+@ToString(exclude = "nickName")
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,14 +33,14 @@ public class Product {
     @Setter
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private Category category; // 상품 카테고리
 
-    @CreationTimestamp // insert시에 자동으로 서버시간 저장
+    @CreationTimestamp  // INSERT시에 자동으로 서버시간 저장
     @Column(updatable = false) // 수정불가
     private LocalDateTime createdAt; // 상품 등록시간
 
-    @UpdateTimestamp // update문 실행시 자동으로 시간이 저장
-    private LocalDateTime updatedAt;
+    @UpdateTimestamp  // UPDATE문 실행시 자동으로 시간이 저장
+    private LocalDateTime updatedAt; // 상품 수정시간
 
     // 데이터베이스에는 저장안하고 클래스 내부에서만 사용할 필드
     @Transient
@@ -49,6 +49,7 @@ public class Product {
     public enum Category {
         FOOD, FASHION, ELECTRONIC
     }
+
 
     // 컬럼 기본값 설정
     @PrePersist
