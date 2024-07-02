@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.spring.jpastudy.event.entity.Event;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,7 +20,7 @@ public class EventSaveDto {
     public String desc;
     private String imageUrl;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime beginDate;
+    private LocalDate beginDate;
 
     // 엔터티로 변경하는 유틸 메서드
     public Event toEntity() {

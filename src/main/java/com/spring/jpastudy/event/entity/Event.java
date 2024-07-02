@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -32,7 +33,7 @@ public class Event {
     @Column(name = "ev_image_path")
     private String image; // 이벤트 메인 이미지 경로
 
-    private LocalDateTime date; // 이벤트 행사 시작 날짜
+    private LocalDate date; // 이벤트 행사 시작 날짜
 
     @CreationTimestamp
     private LocalDateTime createdAt; // 이벤트 등록 날짜
