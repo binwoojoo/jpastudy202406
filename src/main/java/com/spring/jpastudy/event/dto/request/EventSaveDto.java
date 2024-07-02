@@ -1,0 +1,35 @@
+package com.spring.jpastudy.event.dto.request;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.spring.jpastudy.event.entity.Event;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class EventSaveDto {
+
+    private String title;
+    public String desc;
+    private String imageUrl;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime beginDate;
+
+    // 엔터티로 변경하는 유틸 메서드
+    public Event toEntity() {
+
+        return Event.builder()
+                .title(this.title)
+                .description(this.desc)
+                .image(this.imageUrl)
+                .date(this.beginDate)
+                .build();
+    }
+
+}
