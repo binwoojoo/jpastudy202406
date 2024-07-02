@@ -21,12 +21,12 @@ public class EventController {
 
     // 전체 조회 요청
     @GetMapping
-    public ResponseEntity<?> getList() {
-        List<Event> events = eventService.getEvents();
+    public ResponseEntity<?> getList(String sort) {
+        List<Event> events = eventService.getEvents(sort);
 
         return ResponseEntity.ok().body(events);
     }
-
+    
     // 동록 요청
     @PostMapping
     public ResponseEntity<?> register(@RequestBody EventSaveDto dto) {
