@@ -22,12 +22,18 @@ public class EventController {
 
     // 전체 조회 요청
     @GetMapping
-    public ResponseEntity<?> getList(@RequestParam(required = false, defaultValue = "date") String sort) {
+    public ResponseEntity<?> getList(
+            @RequestParam(required = false) String sort) {
+
+        if (sort == null) {
+            return ResponseEntity.badRequest().body("sort 파라미터가 없당게");
+        }
+
         List<EventDetailDto> events = eventService.getEvents(sort);
 
         return ResponseEntity.ok().body(events);
     }
-
+    
     // 동록 요청
     @PostMapping
     public ResponseEntity<?> register(@RequestBody EventSaveDto dto) {
@@ -35,4 +41,5 @@ public class EventController {
 
         return ResponseEntity.ok().body(events);
     }
+
 }
