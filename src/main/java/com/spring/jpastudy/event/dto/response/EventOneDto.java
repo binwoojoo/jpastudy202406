@@ -18,7 +18,7 @@ public class EventOneDto {
     @JsonProperty("event-id")
     private String id;
 
-    private String tilte;
+    private String title;
 
     private String desc;
 
@@ -31,7 +31,7 @@ public class EventOneDto {
 
     public EventOneDto(Event e) {
         this.id = e.getId().toString();
-        this.tilte = e.getTitle();
+        this.title = e.getTitle();
         this.desc = e.getDescription();
         this.image = e.getImage();
         this.date = e.getDate();
