@@ -22,28 +22,30 @@ public class EventController {
     private final EventService eventService;
 
     // 전체 조회 요청
-    @GetMapping
+    @GetMapping("/page/{pageNo}")
     public ResponseEntity<?> getList(
-            @RequestParam(required = false) String sort) {
+            @RequestParam(required = false) String sort,
+            @PathVariable int pageNo) throws InterruptedException {
 
         if (sort == null) {
             return ResponseEntity.badRequest().body("sort 파라미터가 없당게");
         }
 
-        List<EventDetailDto> events = eventService.getEvents(sort);
+        List<EventDetailDto> events = eventService.getEvents(pageNo, sort);
+
+        // 의도적으로 2초간의 로딩을 설정
+        Thread.sleep(1000);
 
         return ResponseEntity.ok().body(events);
     }
-
 
     // 동록 요청
     @PostMapping
     public ResponseEntity<?> register(@RequestBody EventSaveDto dto) {
-        List<EventDetailDto> events = eventService.saveEvent(dto);
+        eventService.saveEvent(dto);
 
-        return ResponseEntity.ok().body(events);
+        return ResponseEntity.ok().body("saved");
     }
-
 
     // 단일 조회 요청
     @GetMapping("/{eventId}")
