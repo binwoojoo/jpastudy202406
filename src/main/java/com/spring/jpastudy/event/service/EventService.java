@@ -45,4 +45,9 @@ public class EventService {
 
     }
 
+    // 이벤트 삭제
+    public void deleteEvent(Long id) {
+        eventRepository.deleteById(id);
+    }
+
 }
