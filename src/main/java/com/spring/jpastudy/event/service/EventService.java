@@ -50,4 +50,12 @@ public class EventService {
         eventRepository.deleteById(id);
     }
 
+    // 이벤트 수정
+    public void modifyEvent(EventSaveDto dto, Long id) {
+        Event event = eventRepository.findById(id).orElseThrow();
+        event.changeEvent(dto);
+
+        eventRepository.save(event);
+    }
+
 }

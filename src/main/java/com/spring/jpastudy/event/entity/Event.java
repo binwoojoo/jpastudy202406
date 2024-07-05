@@ -1,5 +1,6 @@
 package com.spring.jpastudy.event.entity;
 
+import com.spring.jpastudy.event.dto.request.EventSaveDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -8,9 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -25,7 +25,7 @@ public class Event {
     private Long id;
 
     @Column(name = "ev_title", nullable = false, length = 50)
-    private String title;
+    private String title; // 이벤트 제목
 
     @Column(name = "ev_desc")
     private String description; // 이벤트 설명
@@ -33,8 +33,17 @@ public class Event {
     @Column(name = "ev_image_path")
     private String image; // 이벤트 메인 이미지 경로
 
+    @Column(name = "ev_start_date")
     private LocalDate date; // 이벤트 행사 시작 날짜
 
     @CreationTimestamp
     private LocalDateTime createdAt; // 이벤트 등록 날짜
+
+    public void changeEvent(EventSaveDto dto) {
+
+        this.title = dto.getTitle();
+        this.date = dto.getBeginDate();
+        this.image = dto.getImageUrl();
+        this.description = dto.getDesc();
+    }
 }
